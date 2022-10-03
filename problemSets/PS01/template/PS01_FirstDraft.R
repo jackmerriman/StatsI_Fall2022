@@ -28,7 +28,10 @@ pkgTest <- function(pkg){
 # lapply(c("stringr"),  pkgTest)
 
 lapply(c(),  pkgTest)
-install.packages(tidyverse)
+
+# set working directory
+setwd("~/Documents/GitHub/QTM200Spring2021/problem_sets/PS1")
+install.packages("tidyverse")
 library(tidyverse)
 
 #####################
@@ -37,8 +40,6 @@ library(tidyverse)
 
 y <- c(105, 69, 86, 100, 82, 111, 104, 110, 87, 108, 87, 90, 94, 113, 112, 98, 80, 97, 95, 111, 114, 89, 95, 126, 98)
 
-#part 1
-
 n <- length(y) #sample size
 ybar <- mean(y) #sample mean
 s <- sd(y) #sample standard deviation
@@ -46,27 +47,60 @@ cc <- 0.9 #confidence coefficient
 
 n>30#t-distribution because CLT doesn't apply unless n>30
 
+#not finding the 90th percentile, because we exclude the first five percentiles, as
+#this is a two tailed confidence interval, so (1+cc)/2 gives us 0.95 rather than 0.9
+#degrees of freedom = sample size - 1
 z <- qt((1+cc)/2,df=n-1) #z-score
+z
+
 se <- (s/sqrt(n)) #sample standard error
+se
+
 md <- z*se #distance of mean (md) from interval boundary
-ybar - md #lower interval
-ybar + md #upper interval
+md
 
-t.test(y, conf.level = 0.9, alternative = "two.sided") #checking my answer
+ll <- ybar-md
+ul <- ybar+md
+ll
+ul
 
-#part 2
 
-#null hypothesis = mean is less than or equal to 100
-#alternative hypothesis = mean is greater than 100
-mu0 <- 100 #null hypothesis population mean
-alp <- 0.05 #alpha
-dgfr <- n-1 #degrees of freedom
-t <- (ybar-mu0)/se #t-score
-p <- pt(t, dgfr, lower.tail = FALSE) #p value for right tailed t-test
-p > alp
+t.test(y, conf.level = 0.9, alternative = "two.sided")
+
+
+#step 1 = formulate hypotheses
+#null hypothesis - ybar <= 100
+#alternative hypothesis - ybar > 100
+#alpha is significance level
+
+#step 2 = state variance
+#variance, or alpha = 0.05
+alp <- 0.05
+
+#step 3 = calculate degrees of freedom
+dgfr <- n-1
+
+#step 4 = determine critical value
+crit <- qt(alp, dgfr, lower.tail=FALSE)
+crit
+
+qt(abs(t), dgfr, lower.tail=FALSE)
+#if t is greater than crit, then we reject null hypothesis
+
+#step 5 = calculate test statistic
+#t formula = sample mean - population mean divided by sample sd over square root n
+ybar <- mean(y)
+mu0 <- 100
+
+t <- (ybar-mu0)/(s/sqrt(n)) #find t-score for this set of hyoptheses
+pt(t, 24, lower.tail = FALSE)
 #p value is greater than 0.05, therefore we do not reject the null hypothesis
 
-t.test(y, mu = 100, alternative = "greater") #checking my answer
+
+t.test(y, mu = 100, alternative = "greater")
+
+
+#if p is greater than alpha then accept the null hypothesis
 
 
 #####################
@@ -86,38 +120,23 @@ expenditure %>%
   labs(x = "per capita personal income in state",
        y = "per capita expenditure on shelters/housing assistance in state",
        colour =
-         "Number of residents
+       "Number of residents
        per 100,000 that
        are 'financially insecure'
        in state",
        size =
-         "Number of people
+       "Number of people
        per thousand residing
-       in urban areas in state",
-       title = "Relationships between all discrete variables")
-
+       in urban areas in state")
 expenditure %>%
   ggplot(aes(x=Region, y=Y))+
   geom_boxplot()+
   labs(x = "Region",
-       y = "per capita expenditure on shelters/housing assistance in state",
-       title = "Shelter spending by region")
+       y = "per capita expenditure on shelters/housing assistance in state")
 
 expenditure %>%
-  ggplot(aes(x=X1, y=Y))+
+  ggplot(aes(x=X1, y=Y, colour=Region))+
   geom_point()+
   labs(x = "per capita personal income in state",
        y = "per capita expenditure on shelters/housing assistance in state",
-       title = "Relationship between personal income and shelter spending")
-
-expenditure %>%
-  ggplot(aes(x=X1, y=Y, colour=Region, shape=Region))+
-  geom_point()+
-  labs(x = "per capita personal income in state",
-       y = "per capita expenditure on shelters/housing assistance in state",
-       colour = "Region",
-       shape = "Region",
-       title = "Relationship between personal income and shelter spending with
-       regions")
-
-
+       colour = "Region")

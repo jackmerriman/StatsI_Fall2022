@@ -21,13 +21,24 @@ summary(dat)
 # have? Try using the as.factor() function to transform it to
 # a factor.
 
+as.factor(dat$genre)
+?unique()
+unique(as.factor(dat$genre))
+  # 10 different genres are listed
+
+
 # Explore the `top200_box` column. Try using the as.logical() 
 # function to transform it. What goes wrong?
+
+str(dat$top200_box)
+as.logical(dat$top200_box)
 
 # The ifelse() function can be useful for transforming values,
 # which then allows us to transform the class of the vector.
 # Read the help file on ifelse() and try to use it on 
 #`top200_box` to transform "No" to FALSE and "Yes" to TRUE.
+?ifelse
+ifelse(dat$top200_box == "yes", TRUE, FALSE)
 
 ######################
 # Exploratory Analysis
@@ -57,7 +68,7 @@ with(dat, addmargins(table(genre, critics_rating)))
 with(dat, prop.table(table(genre, critics_rating), margin = 1))
 
 # Try to find the proportion along the columns:
-
+with(dat, prop.table(table(genre, critics_rating), margin = 2))
 
 # Total proportion:
 with(dat, prop.table(table(genre, critics_rating)))
@@ -153,7 +164,8 @@ dev.off()
 # it work? Let's call it on the contingency table we used for 
 # the bar plot above.
 
-chi <- 
+?chisq.test()
+chi <- chisq.test(table(dat_mini$genre, dat_mini$critics_rating))
 
 # Remember, when we assign the result of a test to an object,
 # we can then access all the information which belongs to that
