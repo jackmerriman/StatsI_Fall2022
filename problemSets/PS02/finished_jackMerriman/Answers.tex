@@ -1,0 +1,199 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{graphicx,textcomp}
+\usepackage{natbib}
+\usepackage{setspace}
+\usepackage{fullpage}
+\usepackage{color}
+\usepackage[reqno]{amsmath}
+\usepackage{amsthm}
+\usepackage{fancyvrb}
+\usepackage{amssymb,enumerate}
+\usepackage[all]{xy}
+\usepackage{endnotes}
+\usepackage{lscape}
+\newtheorem{com}{Comment}
+\usepackage{float}
+\usepackage{hyperref}
+\newtheorem{lem} {Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{cor}{Corollary}
+\newtheorem{obs}{Observation}
+\usepackage[compact]{titlesec}
+\usepackage{dcolumn}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{multirow}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\newcolumntype{.}{D{.}{.}{-1}}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+\definecolor{light-gray}{gray}{0.65}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+\lstset{style=mystyle}
+\newcommand{\Sref}[1]{Section~\ref{#1}}
+
+\title{Problem Set 2}
+\date{Jack Merriman}
+\author{Applied Stats/Quant Methods 1}
+
+\begin{document}
+	\maketitle
+	
+\section*{Question 1}
+
+\textit{(a)}\\ 
+
+\vspace{.25cm}
+
+\noindent I begin by creating a matrix with the observations from the corruption data
+
+\lstinputlisting[language=R, firstline=5, lastline=7]{PS02.R} 
+
+\noindent Then I create an empty matrix with the same dimensions and for each cell divide the row totals by the column totals, before multiplying by the grand total, to assign expected values for the original data set to the new matrix
+
+\lstinputlisting[language=R, firstline=10, lastline=15]{PS02.R} 
+
+\noindent Then I make use of vectorised operations to apply $\frac{Row \: total}{Grand \: total} \times Column \: total$ to every cell and find the squared residuals
+
+\lstinputlisting[language=R, firstline=18, lastline=19]{PS02.R} 
+
+\noindent Then by summing the resulting matrix I find the $\chi^2$ test statistic which is $3.791168$
+
+\begin{lstlisting}[language=R]
+chi <- sum(chiCorruption)
+chi
+[1] 3.791168
+#I can then check my workings by using the chisq.test() function
+chisq.test(corruption)
+[1]	X-squared = 3.7912, df = 2, p-value = 0.1502
+#the chi squared value matches the value I calculated by hand
+\end{lstlisting}
+
+\clearpage
+
+\noindent\textit{(b)}\\ 
+
+\vspace{.25cm}
+
+\noindent The p-value for the $chi^2$ test statistic can be calculated using the \texttt{pchisq()} function, where the degrees of freedom are $df = (rows - 1)(columns - 1) = (2-1)(3-1) = 2$
+
+\begin{lstlisting}[language=R]
+pchisq(chi, df = 2, lower.tail = FALSE)
+[1] 0.1502306
+\end{lstlisting}
+
+\vspace{.25cm}
+
+\noindent\textit{(c)}\\ 
+
+\vspace{.25cm}
+
+\noindent Using the same method as I used in \textit{(a)} I assign the standardised residuals to each cell of an empty vector using the $\frac{f_{observed}-f_{expected}}{standard \: error}$ formula this time.
+
+\lstinputlisting[language=R, firstline=33, lastline=44]{PS02.R} 
+
+\noindent This outputs the following values:
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{l | c c c }
+		& Not Stopped & Bribe requested & Stopped/given warning \\
+		\\[-1.8ex] 
+		\hline \\[-1.8ex]
+		Upper class  & 0.322 & -1.642 & 1.523 \\
+		\\
+		Lower class & -0.322 & 1.642  &  -1.523 \\
+		
+	\end{tabular}
+\end{table}
+
+\vspace{.25cm}
+
+\noindent\textit{(d)}\\ 
+
+\vspace{.25cm}
+
+\noindent	None of the absolute values of our standardised residuals are greater than 3, so that means none of the observations are outliers. 
+
+\clearpage
+
+\section*{Question 2 }
+
+\noindent\textit{(a)}\\ 
+
+\noindent The null hypothesis is that there is no observable linear relationship between the number of new or repaired drinking-facilities in villages and the presence of a policy mandating a female council lead, notated as:
+
+\noindent$H_{0} : \rho_{y \sim x} = 0$
+
+\noindent and the converse alternative hypothesis as:
+
+\noindent$H_{A} : \rho_{y \sim x} \neq 0$
+
+\noindent Where $x$ is whether or not the policy is in place, and $y$ is the number of new or repaired drinking facilities.\\
+
+\noindent\textit{(b)}\\ 
+
+
+\noindent I run a bivariate regression using the \texttt{lm()} function and assign it to a variable so I can create a confidence interval with \texttt{confint()}
+
+\begin{lstlisting}[language=R]
+	policyData <- read.csv(url("https://raw.githubusercontent.com/kosukeimai/qss/master/PREDICTION/women.csv"))
+	#specify the variables being examined
+	polModel <- lm(formula = water ~ reserved, data = policyData)
+	confint(polModel)
+	[1]            2.5 %   97.5 %
+	(Intercept) 10.240240 19.23640
+	reserved     1.485608 17.01924
+\end{lstlisting}
+
+\noindent We can see that the confidence intervals for the correlation coefficient are: $1.49 \leq \rho \leq 17.02$
+As the $0$ falls outside of this $95\%$ confidence interval, we reject the null hypothesis.\\
+
+\noindent\textit{(c)}\\ 
+
+\noindent We find the coefficient with \texttt{summary()}:
+
+\begin{lstlisting}[language=R]
+	summary(polModel)
+	[1] Residuals:   
+		 Min      1Q     Median    3Q     Max 
+	 -23.991 -14.738  -7.865   2.262 316.009 
+	Coefficients:            
+							 Estimate Std. Error t value Pr(>|t|)    
+	(Intercept)   14.738      2.286   6.446 4.22e-10 ***
+	reserved       9.252      3.948   2.344   0.0197 *  
+\end{lstlisting}
+
+\noindent Our sample coefficient is $9.252$, as our $x$ variable is a binary variable with only two possible values (0 and 1), we can see that on average, villages with the policy mandating a female council leader have \textbf{on average} $9.252$ more new or repaired drinking facilities than those who do not (the intercept).
+\clearpage
+
+
+\end{document}
