@@ -44,27 +44,16 @@ for (i in 1:nrow(corruption)){
 }
 resCorruption
 
-
-
-corruption[1,2]
-expCorruption[1,2]
-corruption[1,2]-expCorruption[1,2]
-
-corruption[2,2]
-expCorruption[2,2]
-corruption[2,2]-expCorruption[2,2]
-
-
-#question 4, standardised residuals help because x
+#question 4, none of the residuals are larger than 3, so no outliers
 
 
 #Exercise 2
 
-#part a
+#part a, read in data
 policyData <- read.csv(url("https://raw.githubusercontent.com/kosukeimai/qss/master/PREDICTION/women.csv"))
 policyData
 head(policyData)
-policyData %>%
+policyData %>% #create boxplot to explore data, not particularly useful given outliers
   ggplot(aes(x=as.logical(reserved), y=water))+
   geom_boxplot()+
   labs(x="reserved",
@@ -76,8 +65,9 @@ policyData %>%
 #part b
 
 polModel <- lm(formula = water ~ reserved, data = policyData)
-summary(polModel)
 confint(polModel)
+summary(polModel)
+
 #confidence interval shows that rho is between 1.5 and 17 which means we can reject
 #the null that rho equals 0
 
