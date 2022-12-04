@@ -1,0 +1,222 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{graphicx,textcomp}
+\usepackage{natbib}
+\usepackage{setspace}
+\usepackage{fullpage}
+\usepackage{color}
+\usepackage[reqno]{amsmath}
+\usepackage{amsthm}
+\usepackage{fancyvrb}
+\usepackage{amssymb,enumerate}
+\usepackage[all]{xy}
+\usepackage{endnotes}
+\usepackage{lscape}
+\newtheorem{com}{Comment}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{parallel,enumitem}
+\newtheorem{lem} {Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{cor}{Corollary}
+\newtheorem{obs}{Observation}
+\usepackage[compact]{titlesec}
+\usepackage{dcolumn}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{multirow}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\newcolumntype{.}{D{.}{.}{-1}}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+\definecolor{light-gray}{gray}{0.65}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+\lstset{style=mystyle}
+\newcommand{\Sref}[1]{Section~\ref{#1}}
+
+\title{Problem Set 3}
+\date{Jack Merriman}
+\author{Applied Stats/Quant Methods 1}
+
+\begin{document}
+	\maketitle
+	
+\section*{Question 1}
+
+\textit{(a)}\\
+\lstinputlisting[language=R, firstline=16, lastline=16]{PS4.R}
+
+\clearpage
+
+\noindent\textit{(b)}
+\lstinputlisting[language=R, firstline=19, lastline=19]{PS4.R}
+
+\begin{table}[!htbp] \centering   \caption{}   \label{} \begin{tabular}{@{\extracolsep{5pt}}lc} \\[-1.8ex]\hline \hline \\[-1.8ex]  & \multicolumn{1}{c}{\textit{Dependent variable:}} \\ \cline{2-2} \\[-1.8ex] & prestige \\ \hline \\[-1.8ex]  income & 0.003$^{***}$ \\   & (0.0005) \\   & \\  professional & 37.781$^{***}$ \\   & (4.248) \\   & \\  income:professional & $-$0.002$^{***}$ \\   & (0.001) \\   & \\  Constant & 21.142$^{***}$ \\   & (2.804) \\   & \\ \hline \\[-1.8ex] Observations & 98 \\ R$^{2}$ & 0.787 \\ Adjusted R$^{2}$ & 0.780 \\ Residual Std. Error & 8.012 (df = 94) \\ F Statistic & 115.878$^{***}$ (df = 3; 94) \\ \hline \hline \\[-1.8ex] \textit{Note:}  & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ \end{tabular} \end{table} 
+
+\noindent\textit{(c)}\\
+
+\noindent Where \texttt{prestige} $= Y$, \texttt{income} $= X\textsubscript{1}$, and \texttt{professional} $= X\textsubscript{2}$:\\
+
+$Y = 21.142 + 0.003X\textsubscript{1} + 37.781X\textsubscript{2} - 0.002X\textsubscript{1}X\textsubscript{2}$\\
+
+\noindent So for blue and white collar jobs:\\
+
+$Y = 21.142 + 0.003X\textsubscript{1}$\\
+
+\noindent And for professional jobs:\\
+
+$Y = 58.923 + 0.001X\textsubscript{1}$\\
+
+\clearpage
+
+\noindent\textit{(d)}\\
+
+\noindent An $X\textsubscript{1}$ coefficient of $0.003$ suggests that, before accounting for interaction effects, a \$1 increase in income leads to an expected increase of 0.003 in Pineo-Porter prestige score. \\
+
+\noindent\textit{(e)}\\
+
+\noindent An $X\textsubscript{2}$ coefficient of $37.781$ suggests that, holding income constant, the average professional has a Pineo-Porter prestige score 37.781 higher than the average blue or white collar worker. \\
+
+\noindent\textit{(f)}\\
+
+\noindent Using the equation for professional jobs with $X\textsubscript{1} = 1000$ :\\
+
+\noindent $\hat{Y} = 58.923 + 0.001(1000)\\
+\hat{Y} = 58.923 + 1\\
+\hat{Y} = 59.923$\\
+
+\noindent For professional jobs, a \$1,000 increase in income would lead to an increase in Pineo-Porter prestige score of 1.\\
+
+\noindent\textit{(g)}\\
+
+\noindent We put \$6,000 into both of the sub-equations from \textit{(c)}: \\
+
+
+\par
+\begin{Parallel}[v]{0.48\textwidth}{0.48\textwidth}
+	\ParallelLText{\noindent
+		$\hat{Y}\textsubscript{0} = 21.142 + 0.003(6000)\\
+		\hat{Y}\textsubscript{0} = 21.142 + 18\\
+		\hat{Y}\textsubscript{0} = 39.142$\\}
+	\ParallelRText{\noindent
+		$\hat{Y}\textsubscript{1} = 58.923 + 0.001(6000)$\\
+		$\hat{Y}\textsubscript{1} = 58.923 + 6$\\
+		$\hat{Y}\textsubscript{1} = 64.923$\\}
+	\ParallelPar
+\end{Parallel}
+
+\begin{center} $64.923 - 39.142 = 25.781$\\
+\end{center}
+
+\noindent We can see the effect of making the worker in question an employee would lead to an increase of $25.781$ in Pineo-Porter prestige score. If we look at the second lines of the equations above we can see that most of that increase can be attributed to differences in intercept, and that the income of much smaller for the professional equation. This suggests that income could be more influential for the prestige of blue and white collar jobs than professional jobs.
+\clearpage
+
+\section*{Question 2}
+
+
+\textit{(a)}\\
+
+\noindent Where $\beta\textsubscript{1}$ is the linear relationship between the yard signs and a precinct's vote share:
+
+\noindent $H\textsubscript{0}: \beta\textsubscript{1} = 0$ 
+
+\noindent $H\textsubscript{A}: \beta\textsubscript{1} \neq 0$ \\
+
+\noindent $t =  \frac{\hat{\beta}\textsubscript{1} - \beta\textsubscript{1}}{se\textsubscript{$\hat{\beta}\textsubscript{1}$}}$\\
+
+\noindent$t = \frac{0.042-0}{0.016}$\\
+
+\noindent$t = 2.625$\\
+
+\noindent$df = n-k-1 = 131-3 = 128$
+
+\begin{lstlisting}language=R]
+> 2*pt(2.625, df = 128, lower.tail = FALSE)
+[1] 0.00972002
+\end{lstlisting}
+
+\noindent Our $p$-value $(0.0097)$ is less than our confidence threshold $(\alpha = 0.05)$ therefore we can reject the null hypothesis, suggesting there is a statistically significant linear relationship between the presence of yard signs in a precinct and a precinct's vote share.\\
+
+\noindent\textit{(b)}\\
+
+\noindent Where $\beta\textsubscript{2}$ is the linear relationship between yard signs in an adjacent precinct and the original precinct's vote share:
+
+\noindent $H\textsubscript{0}: \beta\textsubscript{2} = 0$ 
+
+\noindent $H\textsubscript{A}: \beta\textsubscript{2} \neq 0$ \\
+
+\noindent $t =  \frac{\hat{\beta}\textsubscript{2} - \beta\textsubscript{2}}{se\textsubscript{$\hat{\beta}\textsubscript{2}$}}$\\
+
+\noindent$t = \frac{0.042-0}{0.013}$\\
+
+\noindent$t = 3.231$\\
+
+\noindent$df = n-k-1 = 131-3 = 128$
+
+\begin{lstlisting}language=R]
+	> 2*pt(0.042/0.013, df = 128, lower.tail = FALSE)
+	[1] 0.00156946
+\end{lstlisting}
+
+\noindent Our $p$-value $(0.0016)$ is less than our confidence threshold $(\alpha = 0.05)$ therefore we can reject the null hypothesis, suggesting there is a statistically significant linear relationship between the presence of yard signs in an adjacent precinct and the original precinct's vote share.\\
+
+\clearpage
+
+\noindent\textit{(c)}\\
+
+\noindent The coefficient for the constant, or intercept, is the mean value of $Y$ for observations in the data where the other two variables are 0. That means, in this model, that Ken Cuccinelli's average vote share in precincts without yard signs that are not adjacent to another precinct with a yard sign was $30.2\%$.\\
+
+\noindent\textit{(d)}\\
+
+\noindent We will begin our evaluation by conducting an overall f-test on the model with $\alpha = 0.05$. Our hypotheses as follows:
+
+\noindent $H\textsubscript{0}: \beta\textsubscript{1} = \beta\textsubscript{2} = 0$ 
+
+\noindent $H\textsubscript{A}:  \beta\textsubscript{1} \: or \:  \beta\textsubscript{2} \neq 0$ \\
+
+\noindent$F = \frac{R\textsuperscript{2}/k}{(1-R\textsuperscript{2})/(n-k-1)}$\\
+
+\noindent$F = \frac{0.094/2}{(1-0.094)/131-2-1)}$\\
+
+\noindent$F = \frac{0.047}{0.906/128}$\\
+
+\noindent$F = 6.64$\\
+
+\begin{lstlisting}language=R]
+> df((0.094/2)/((1-0.094)/128), 2, 128)
+[1] 0.001634304
+\end{lstlisting}
+
+\noindent With a p-value of $0.0016$ below the significance level $(\alpha = 0.05)$ we reject $H\textsubscript{0}$.\\
+
+\noindent Our overall F-test producing a $p < 0.05$ tells us what we have already learned from \textit{(a)} and \textit{(b)} which told us that our individual predictors were useful, and therefore our overall model is useful. The presence of negative yard signs against McAuliffe did impact local vote share for his Republican opponent. The $R\textsuperscript{2}$ value of $0.094$ is quite low, and shows that the yard signs explain around $9\%$ of the variation of the vote share, and that other variables will  explain the overwhelming majority of the variation.
+
+\end{document}
+
